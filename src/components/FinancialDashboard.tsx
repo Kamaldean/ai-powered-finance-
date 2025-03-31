@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
+import { ResponsiveContainer } from "recharts";
 import { motion } from "framer-motion";
 
 // Constants moved outside the component
@@ -27,7 +27,9 @@ const FinancialDashboard: React.FC = () => {
   // const [newGoal, setNewGoal] = useState({ name: "", amount: 0, saved: 0 });
   //const [goalPage, setGoalPage] = useState(0);
   const [budgetPage, setBudgetPage] = useState(0);
-  const [darkMode, setDarkMode] = useState(() => localStorage.getItem("darkMode") === "true");
+  const [darkMode, setDarkMode] = useState(
+    () => localStorage.getItem("darkMode") === "true"
+  );
   const [currency, setCurrency] = useState("USD");
   const [alerts, setAlerts] = useState<string[]>([]);
   const [loading, setLoading] = useState(false); // Loading state
@@ -35,26 +37,32 @@ const FinancialDashboard: React.FC = () => {
 
   useEffect(() => {
     setLoading(true); // Start loading
-    axios.get("http://localhost:5000/api/spending-trends")
+    axios
+      .get("http://localhost:5000/api/spending-trends")
       .then((response) => {
         if (Array.isArray(response.data)) {
-          setSpendingData(response.data);
+          // setSpendingData(response.data);
         } else {
           setError("Failed to load spending trends.");
         }
       })
-      .catch(() => setError("Error fetching spending trends. Please try again."))
+      .catch(() =>
+        setError("Error fetching spending trends. Please try again.")
+      )
       .finally(() => setLoading(false)); // Stop loading
 
-    axios.get("http://localhost:5000/api/budget-recommendations")
+    axios
+      .get("http://localhost:5000/api/budget-recommendations")
       .then((response) => {
         if (Array.isArray(response.data)) {
-          setBudget(response.data);
+          //  setBudget(response.data);
         } else {
           setError("Failed to load budget recommendations.");
         }
       })
-      .catch(() => setError("Error fetching budget recommendations. Please try again."))
+      .catch(() =>
+        setError("Error fetching budget recommendations. Please try again.")
+      )
       .finally(() => setLoading(false)); // Stop loading
   }, []);
 
@@ -84,7 +92,11 @@ const FinancialDashboard: React.FC = () => {
   };
 
   return (
-    <div className={`p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-h-screen ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"}`}>
+    <div
+      className={`p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-h-screen ${
+        darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
+      }`}
+    >
       <div className="flex justify-between">
         <button
           aria-label="Toggle Dark Mode"
@@ -148,10 +160,13 @@ const FinancialDashboard: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className={`p-6 rounded-lg shadow-md ${darkMode ? "bg-gray-800 text-white" : "bg-white"}`}
+        className={`p-6 rounded-lg shadow-md ${
+          darkMode ? "bg-gray-800 text-white" : "bg-white"
+        }`}
       >
         <h2 className="text-2xl font-bold mb-4">Spending Trends</h2>
         <ResponsiveContainer width="100%" height={300}>
+          <></>
           {/* <LineChart data={spendingData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="month" />
@@ -162,7 +177,7 @@ const FinancialDashboard: React.FC = () => {
         </ResponsiveContainer>
       </motion.div>
 
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2 }}
@@ -183,7 +198,7 @@ const FinancialDashboard: React.FC = () => {
         {budget.length > (budgetPage + 1) * ITEMS_PER_PAGE && (
           <button onClick={() => setBudgetPage(budgetPage + 1)}>Next</button>
         )}
-      </motion.div>
+      </motion.div> */}
     </div>
   );
 };
